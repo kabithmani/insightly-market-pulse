@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { Building2, Compass } from "lucide-react";
+import { Compass } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ExecutiveBrief from "@/components/sections/ExecutiveBrief";
 import ResidentialMarket from "@/components/sections/ResidentialMarket";
 import PricingHeatmap from "@/components/sections/PricingHeatmap";
@@ -15,8 +13,6 @@ import RegulatoryWatch from "@/components/sections/RegulatoryWatch";
 import EmergingCorridors from "@/components/sections/EmergingCorridors";
 import DeepDiveSection from "@/components/sections/DeepDiveSection";
 import PropertyDiscovery from "@/components/sections/PropertyDiscovery";
-
-const cities = ["Bangalore", "Pune", "Mumbai"];
 
 const sections = [
   { id: "🏠", label: "Property Search", value: "search" },
@@ -35,8 +31,6 @@ const sections = [
 ];
 
 const Index = () => {
-  const [city, setCity] = useState("Bangalore");
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -51,19 +45,9 @@ const Index = () => {
                 Real Estate Intelligence
               </h1>
               <p className="text-xs text-muted-foreground">
-                by Kabith Mani · Issue #4 · March 1–15, 2026
+                by Kabith Mani · Pan-India Coverage · Live Data
               </p>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Select value={city} onValueChange={setCity}>
-              <SelectTrigger className="w-[140px] h-10 rounded-2xl border-border bg-muted/50">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {cities.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </header>
@@ -86,19 +70,19 @@ const Index = () => {
             </TabsList>
           </div>
 
-          <TabsContent value="search"><PropertyDiscovery city={city} /></TabsContent>
-          <TabsContent value="executive"><ExecutiveBrief city={city} /></TabsContent>
-          <TabsContent value="residential"><ResidentialMarket city={city} /></TabsContent>
-          <TabsContent value="heatmap"><PricingHeatmap city={city} /></TabsContent>
-          <TabsContent value="land"><LandIntelligence city={city} /></TabsContent>
-          <TabsContent value="developers"><DeveloperTracker city={city} /></TabsContent>
-          <TabsContent value="infra"><InfraImpact city={city} /></TabsContent>
-          <TabsContent value="commercial"><CommercialWatch city={city} /></TabsContent>
-          <TabsContent value="investors"><InvestorIntelligence city={city} /></TabsContent>
+          <TabsContent value="search"><PropertyDiscovery /></TabsContent>
+          <TabsContent value="executive"><ExecutiveBrief city="Bangalore" /></TabsContent>
+          <TabsContent value="residential"><ResidentialMarket city="Bangalore" /></TabsContent>
+          <TabsContent value="heatmap"><PricingHeatmap city="Bangalore" /></TabsContent>
+          <TabsContent value="land"><LandIntelligence city="Bangalore" /></TabsContent>
+          <TabsContent value="developers"><DeveloperTracker city="Bangalore" /></TabsContent>
+          <TabsContent value="infra"><InfraImpact city="Bangalore" /></TabsContent>
+          <TabsContent value="commercial"><CommercialWatch city="Bangalore" /></TabsContent>
+          <TabsContent value="investors"><InvestorIntelligence city="Bangalore" /></TabsContent>
           <TabsContent value="national"><NationalCompass /></TabsContent>
-          <TabsContent value="regulatory"><RegulatoryWatch city={city} /></TabsContent>
-          <TabsContent value="emerging"><EmergingCorridors city={city} /></TabsContent>
-          <TabsContent value="deepdive"><DeepDiveSection city={city} /></TabsContent>
+          <TabsContent value="regulatory"><RegulatoryWatch city="Bangalore" /></TabsContent>
+          <TabsContent value="emerging"><EmergingCorridors city="Bangalore" /></TabsContent>
+          <TabsContent value="deepdive"><DeepDiveSection city="Bangalore" /></TabsContent>
         </Tabs>
       </main>
 
@@ -107,10 +91,10 @@ const Index = () => {
         <div className="container max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3">
             <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Real Estate Intelligence by Kabith Mani — WAT Framework · Data: K-RERA, MahaRERA, Dishaank, Sub-Registrar, Property Portals
+              © {new Date().getFullYear()} Real Estate Intelligence by Kabith Mani — WAT Framework · Data: K-RERA, MahaRERA, OpenStreetMap, Property Portals
             </p>
             <p className="text-xs text-muted-foreground">
-              🔜 Next Issue #5: March 16–31, 2026 · Deep Dive: The Sarjapur Road Pricing Ceiling
+              Pan-India coverage · Real-time location discovery powered by OpenStreetMap
             </p>
           </div>
         </div>
