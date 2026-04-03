@@ -14,7 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      coverage_requests: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          lat: number
+          lng: number
+          location_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          lat: number
+          lng: number
+          location_name: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          lat?: number
+          lng?: number
+          location_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
