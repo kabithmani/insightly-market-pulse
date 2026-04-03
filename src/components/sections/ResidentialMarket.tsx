@@ -1,0 +1,131 @@
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { getMarketMetrics, getSegments } from "@/data/intelligenceData";
+
+interface Props { city: string; }
+
+const SIGNAL_COLORS: Record<string, string> = {
+  STRONG: "text-green-600 bg-green-50",
+  RISING: "text-blue-600 bg-blue-50",
+  HEALTHY: "text-emerald-600 bg-emerald-50",
+  STEADY: "text-amber-600 bg-amber-50",
+  WATCH: "text-red-600 bg-red-50",
+};
+
+const CHART_COLORS = ["hsl(var(--muted-foreground))", "hsl(var(--muted-foreground))", "hsl(var(--primary))", "hsl(var(--primary))", "hsl(var(--accent))"];
+
+export default function ResidentialMarket({ city }: Props) {
+  const metrics = getMarketMetrics(city);
+  const segments = getSegments(city);
+
+  const chartData = segments.map(s => ({
+    name: s.segment.split("(")[0].trim(),
+    units: s.unitsSold,
+    share: parseInt(s.share),
+  }));
+
+  return (
+    <div className="space-y-6 animate-[fade-in_0.4s_ease-out]">
+      {/* Market Performance Metrics */}
+      <div className="rounded-3xl bg-card shadow-card overflow-hidden">
+        <div className="p-6 border-b border-border">
+          <h3 className="text-lg font-bold text-foreground">Market Performance Metrics</h3>
+          <p className="text-sm text-muted-foreground">Current cycle vs previous cycle · Source: K-RERA, portals</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/50">
+                <th className="text-left p-3 font-semibold text-muted-foreground">Metric</th>
+                <th className="text-right p-3 font-semibold text-muted-foreground">Current Cycle</th>
+                <th className="text-right p-3 font-semibold text-muted-foreground">Previous Cycle</th>
+                <th className="text-right p-3 font-semibold text-muted-foreground">Change</th>
+                <th className="text-center p-3 font-semibold text-muted-foreground">Signal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {metrics.map((m, i) => (
+                <tr key={m.metric} className={i % 2 === 0 ? "" : "bg-muted/20"}>
+                  <td className="p-3 font-medium text-foreground">{m.metric}</td>
+                  <td className="p-3 text-right text-foreground font-semibold">{m.currentCycle}</td>
+                  <td className="p-3 text-right text-muted-foreground">{m.previousCycle}</td>
+                  <td className="p-3 text-right font-semibold text-green-600">{m.change}</td>
+                  <td className="p-3 text-center">
+                    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-bold ${SIGNAL_COLORS[m.signal] || ""}`}>
+                      {m.signal}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Segment Breakdown Chart + Table */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-3xl bg-card shadow-card p-6">
+          <h3 className="text-lg font-bold text-foreground mb-1">Segment Breakdown</h3>
+          <p className="text-sm text-muted-foreground mb-4">Units sold by price segment · Feb 2026</p>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} layout="vertical" margin={{ left: 20, right: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis type="number" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+                <Tooltip
+                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 16, fontSize: 12 }}
+                  formatter={(value: number) => [value.toLocaleString("en-IN") + " units", "Sold"]}
+                />
+                <Bar dataKey="units" radius={[0, 8, 8, 0]}>
+                  {chartData.map((_, i) => (
+                    <Cell key={i} fill={CHART_COLORS[i]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-3xl bg-card shadow-card overflow-hidden">
+          <div className="p-6 border-b border-border">
+            <h3 className="text-lg font-bold text-foreground">Detailed Breakdown</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-muted/50">
+                  <th className="text-left p-3 font-semibold text-muted-foreground">Segment</th>
+                  <th className="text-right p-3 font-semibold text-muted-foreground">Units</th>
+                  <th className="text-right p-3 font-semibold text-muted-foreground">Share</th>
+                  <th className="text-right p-3 font-semibold text-muted-foreground">YOY</th>
+                </tr>
+              </thead>
+              <tbody>
+                {segments.map((s, i) => (
+                  <tr key={s.segment} className={i % 2 === 0 ? "" : "bg-muted/20"}>
+                    <td className="p-3 font-medium text-foreground">{s.segment}</td>
+                    <td className="p-3 text-right text-foreground">{s.unitsSold.toLocaleString("en-IN")}</td>
+                    <td className="p-3 text-right text-muted-foreground">{s.share}</td>
+                    <td className={`p-3 text-right font-semibold ${s.yoyChange.startsWith("+") ? "text-green-600" : "text-red-500"}`}>
+                      {s.yoyChange}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Analyst Insight */}
+      <div className="rounded-3xl bg-primary/5 border border-primary/20 p-6">
+        <h4 className="font-bold text-foreground text-sm mb-2">📊 Analyst Insight</h4>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {city === "Bangalore" && "The market is experiencing a clear premiumisation trend. Luxury segment (₹3Cr+) grew 41% YOY while affordable declined 9%. NRI participation at 38-47% is unprecedented and concentrated in North Bangalore and Sarjapur corridors. The declining QTS (6.2 vs 8.1) indicates strong absorption, but investors should watch unsold inventory in the affordable segment for potential repricing."}
+          {city === "Pune" && "Pune's market mirrors Bangalore's premiumisation but with a 12-18 month lag. The luxury segment surge (+48% YOY) is driven by IT professionals upgrading from mid-segment. Hinjewadi's dominance is creating spillover demand in Tathawade, Ravet, and Punawale – all showing 18-22% appreciation. Metro Phase 3 completion will be the next major catalyst."}
+          {city === "Mumbai" && "Mumbai's market is structurally supply-constrained, driving persistent price appreciation across segments. The luxury segment (₹7Cr+) saw 38% growth, fueled by institutional and NRI buyers. Ulwe (+18%) and Navi Mumbai (+14%) are the growth corridors benefiting from NMIA proximity. Unsold inventory decline of 8% is healthy given the volume of new launches."}
+        </p>
+      </div>
+    </div>
+  );
+}
