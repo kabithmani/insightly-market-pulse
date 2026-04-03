@@ -1,5 +1,5 @@
-// FinCity Real Estate Intelligence – Comprehensive Data Layer
-// All data modeled after FinCity Magazine Issue #4, March 1-15, 2026
+// Real Estate Intelligence – Comprehensive Data Layer
+// All data modeled after Intelligence Report Issue #4, March 1-15, 2026 · by Kabith Mani
 
 // ── Market Performance Metrics ──
 export interface MarketMetric {

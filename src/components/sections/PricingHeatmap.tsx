@@ -46,7 +46,7 @@ export default function PricingHeatmap({ city }: Props) {
         <div className="p-6 border-b border-border">
           <h3 className="text-lg font-bold text-foreground">Corridor Pricing Heatmap</h3>
           <p className="text-sm text-muted-foreground">
-            Average transacted residential PSF · March 2026 · CMI = FinCity Corridor Momentum Index (0-10)
+            Average transacted residential PSF · March 2026 · CMI = Corridor Momentum Index (0-10)
           </p>
         </div>
         <div className="overflow-x-auto">
@@ -146,7 +146,7 @@ export default function PricingHeatmap({ city }: Props) {
       {/* CMI Methodology */}
       <div className="rounded-3xl bg-muted/30 border border-border p-6">
         <h4 className="font-bold text-foreground text-sm mb-3">📐 CMI Methodology</h4>
-        <p className="text-sm text-muted-foreground mb-3">The FinCity Corridor Momentum Index is a composite score (0-10) based on:</p>
+        <p className="text-sm text-muted-foreground mb-3">The Corridor Momentum Index (CMI) is a composite score (0-10) based on:</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: "Price Velocity", weight: "30%", desc: "YOY price growth" },
