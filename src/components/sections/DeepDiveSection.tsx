@@ -34,7 +34,7 @@ export default function DeepDiveSection({ city }: Props) {
 
       {/* FinCity Summary Score */}
       <div className="rounded-3xl bg-card shadow-card p-6 md:p-8">
-        <h3 className="text-lg font-bold text-foreground mb-6">FinCity Summary Score</h3>
+        <h3 className="text-lg font-bold text-foreground mb-6">Intelligence Summary Score</h3>
         <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-6">
           {dive.scores.map(s => (
             <div key={s.category} className="text-center">

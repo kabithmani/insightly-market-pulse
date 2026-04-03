@@ -69,7 +69,7 @@ export default function ExecutiveBrief({ city }: Props) {
         <div className="flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-accent shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-bold text-foreground text-sm">FinCity Top Takeaways</h4>
+            <h4 className="font-bold text-foreground text-sm">Top Takeaways</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
               {city === "Bangalore" && <>
                 <li>• <strong className="text-foreground">Entry window closing:</strong> North Bangalore pre-catalysed pricing has 12-18 months remaining</li>
