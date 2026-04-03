@@ -130,7 +130,7 @@ export function generatePDFReport(
   const lines = doc.splitTextToSize(narrative, pageW - 28);
   doc.text(lines, 14, 32);
 
-  doc.save(`FinCity_Report_${city}_${Date.now()}.pdf`);
+  doc.save(`RealEstateIntel_Report_${city}_${Date.now()}.pdf`);
 }
 
 function generateNarrative(
