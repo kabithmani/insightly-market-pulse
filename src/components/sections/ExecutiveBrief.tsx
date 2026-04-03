@@ -48,7 +48,7 @@ export default function ExecutiveBrief({ city }: Props) {
         <h3 className="text-lg font-bold text-foreground mb-1 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-accent" /> Key Themes This Cycle
         </h3>
-        <p className="text-sm text-muted-foreground mb-6">Top intelligence signals identified by the FinCity Engine</p>
+        <p className="text-sm text-muted-foreground mb-6">Top intelligence signals identified by the Intelligence Engine</p>
         <div className="space-y-4">
           {themes.map((t, i) => (
             <div key={i} className="flex gap-4 items-start p-4 rounded-2xl bg-muted/30 hover:bg-muted/50 transition-colors">
