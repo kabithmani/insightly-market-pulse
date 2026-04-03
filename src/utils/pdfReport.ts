@@ -14,7 +14,7 @@ export function generatePDFReport(
   // Title page
   doc.setFontSize(28);
   doc.setTextColor(59, 90, 200);
-  doc.text("FinCity Real Estate Intelligence", pageW / 2, 40, { align: "center" });
+  doc.text("Real Estate Intelligence — by Kabith Mani", pageW / 2, 40, { align: "center" });
   doc.setFontSize(14);
   doc.setTextColor(80, 80, 80);
   doc.text(`Report for: ${location}`, pageW / 2, 55, { align: "center" });
