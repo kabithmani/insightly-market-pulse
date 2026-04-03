@@ -170,11 +170,11 @@ export function getBenchmark(microMarket: string, city: string): NeighborhoodBen
   return neighborhoodBenchmarks.find(b => b.microMarket === microMarket && b.city === city);
 }
 
-export function getPropertiesInRadius(lat: number, lng: number, radiusKm: number, city: string): Property[] {
+export function getPropertiesInRadius(lat: number, lng: number, radiusKm: number, city?: string): Property[] {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
   const R = 6371;
   return getAllProperties().filter(p => {
-    if (p.city !== city) return false;
+    if (city && p.city !== city) return false;
     const dLat = toRad(p.lat - lat);
     const dLng = toRad(p.lng - lng);
     const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat)) * Math.cos(toRad(p.lat)) * Math.sin(dLng / 2) ** 2;
