@@ -46,7 +46,7 @@ export default function PricingHeatmap({ city }: Props) {
         <div className="p-6 border-b border-border">
           <h3 className="text-lg font-bold text-foreground">Corridor Pricing Heatmap</h3>
           <p className="text-sm text-muted-foreground">
-            Average transacted residential PSF · March 2026 · CMI = FinCity Corridor Momentum Index (0-10)
+            Average transacted residential PSF · March 2026 · CMI = Corridor Momentum Index (0-10)
           </p>
         </div>
         <div className="overflow-x-auto">
