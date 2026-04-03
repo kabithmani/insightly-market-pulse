@@ -17,7 +17,7 @@ export default function ExecutiveBrief({ city }: Props) {
           </div>
           <div>
             <h3 className="text-lg font-bold text-foreground">Market Pulse Summary</h3>
-            <p className="text-sm text-muted-foreground">FinCity Intelligence Engine · March 1-15, 2026</p>
+            <p className="text-sm text-muted-foreground">Intelligence Engine · March 1-15, 2026 · by Kabith Mani</p>
           </div>
         </div>
 
