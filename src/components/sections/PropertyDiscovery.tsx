@@ -81,7 +81,7 @@ export default function PropertyDiscovery() {
 
   const handleSearch = async () => {
     if (!location.trim()) { setError("Please enter a location"); return; }
-    setError(""); setLoading(true); setProperties(null); setSelectedProperty(null); setOsmResult(null);
+    setError(""); setLoading(true); setProperties(null); setSelectedProperty(null); setOsmResult(null); setScrapedData(null);
 
     const geo = await geocodeLocation(`${location}, India`);
     if (!geo) { setError("Could not find that location. Try a more specific address."); setLoading(false); return; }
@@ -91,7 +91,7 @@ export default function PropertyDiscovery() {
 
   const handleGPS = () => {
     if (!navigator.geolocation) { setError("Geolocation not supported"); return; }
-    setLoading(true); setProperties(null); setOsmResult(null);
+    setLoading(true); setProperties(null); setOsmResult(null); setScrapedData(null);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
