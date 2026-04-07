@@ -39,6 +39,8 @@ export default function PropertyDiscovery() {
   const [osmResult, setOsmResult] = useState<OSMDiscoveryResult | null>(null);
   const [hasVerifiedData, setHasVerifiedData] = useState(false);
   const [detectedCity, setDetectedCity] = useState("");
+  const [scrapedData, setScrapedData] = useState<ScrapeResult | null>(null);
+  const [scrapeLoading, setScrapeLoading] = useState(false);
 
   const performSearch = async (lat: number, lng: number, displayName: string) => {
     setGeocodedName(displayName);
