@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, MapPin, Loader2, Navigation, SlidersHorizontal, Building2, Home, LandPlot, Store, TrendingUp, BarChart3, Info, GraduationCap, Stethoscope, Train, TreePine, ShoppingBag } from "lucide-react";
+import { Search, MapPin, Loader2, Navigation, SlidersHorizontal, Building2, Home, LandPlot, Store, TrendingUp, BarChart3, Info, GraduationCap, Stethoscope, Train, TreePine, ShoppingBag, Globe, Clock, ExternalLink, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -7,6 +7,7 @@ import { geocodeLocation, haversineDistance } from "@/utils/geo";
 import { getPropertiesInRadius, computeMarketInsights, Property, PropertyType } from "@/data/propertyData";
 import { microMarkets } from "@/data/microMarkets";
 import { discoverLocation, generateLocationIntelligence, OSMDiscoveryResult } from "@/utils/osmDiscovery";
+import { scrapeProperties, ScrapedProperty, ScrapeResult } from "@/utils/scrapeService";
 import PropertyIntelligence from "@/components/PropertyIntelligence";
 import LocationMap from "@/components/LocationMap";
 import CoverageRequestForm from "@/components/CoverageRequestForm";
