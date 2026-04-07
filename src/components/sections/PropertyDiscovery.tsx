@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, MapPin, Loader2, Navigation, SlidersHorizontal, Building2, Home, LandPlot, Store, TrendingUp, BarChart3, Info, GraduationCap, Stethoscope, Train, TreePine, ShoppingBag } from "lucide-react";
+import { Search, MapPin, Loader2, Navigation, SlidersHorizontal, Building2, Home, LandPlot, Store, TrendingUp, BarChart3, Info, GraduationCap, Stethoscope, Train, TreePine, ShoppingBag, Globe, Clock, ExternalLink, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -7,6 +7,7 @@ import { geocodeLocation, haversineDistance } from "@/utils/geo";
 import { getPropertiesInRadius, computeMarketInsights, Property, PropertyType } from "@/data/propertyData";
 import { microMarkets } from "@/data/microMarkets";
 import { discoverLocation, generateLocationIntelligence, OSMDiscoveryResult } from "@/utils/osmDiscovery";
+import { scrapeProperties, ScrapedProperty, ScrapeResult } from "@/utils/scrapeService";
 import PropertyIntelligence from "@/components/PropertyIntelligence";
 import LocationMap from "@/components/LocationMap";
 import CoverageRequestForm from "@/components/CoverageRequestForm";
@@ -38,6 +39,8 @@ export default function PropertyDiscovery() {
   const [osmResult, setOsmResult] = useState<OSMDiscoveryResult | null>(null);
   const [hasVerifiedData, setHasVerifiedData] = useState(false);
   const [detectedCity, setDetectedCity] = useState("");
+  const [scrapedData, setScrapedData] = useState<ScrapeResult | null>(null);
+  const [scrapeLoading, setScrapeLoading] = useState(false);
 
   const performSearch = async (lat: number, lng: number, displayName: string) => {
     setGeocodedName(displayName);
@@ -59,17 +62,26 @@ export default function PropertyDiscovery() {
     const osm = await discoverLocation(lat, lng, radius);
     setOsmResult(osm);
 
-    // 3. Find nearest benchmark micro-markets
+    // 3. Real-time property scraping (backend)
+    setScrapeLoading(true);
+    setLoading(false);
+    try {
+      const scraped = await scrapeProperties(lat, lng, radius, displayName);
+      setScrapedData(scraped);
+    } catch (err) {
+      console.error("Scraping failed:", err);
+    }
+    setScrapeLoading(false);
+
+    // 4. Error if nothing found
     if (found.length === 0 && osm.totalPOIs === 0) {
       setError(`No properties or places found within ${radius} km. Try increasing the radius or a different location.`);
     }
-
-    setLoading(false);
   };
 
   const handleSearch = async () => {
     if (!location.trim()) { setError("Please enter a location"); return; }
-    setError(""); setLoading(true); setProperties(null); setSelectedProperty(null); setOsmResult(null);
+    setError(""); setLoading(true); setProperties(null); setSelectedProperty(null); setOsmResult(null); setScrapedData(null);
 
     const geo = await geocodeLocation(`${location}, India`);
     if (!geo) { setError("Could not find that location. Try a more specific address."); setLoading(false); return; }
@@ -79,7 +91,7 @@ export default function PropertyDiscovery() {
 
   const handleGPS = () => {
     if (!navigator.geolocation) { setError("Geolocation not supported"); return; }
-    setLoading(true); setProperties(null); setOsmResult(null);
+    setLoading(true); setProperties(null); setOsmResult(null); setScrapedData(null);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
@@ -339,6 +351,80 @@ export default function PropertyDiscovery() {
                 <a href="https://maharera.mahaonline.gov.in/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">MahaRERA</a>, 
                 <a href="https://www.99acres.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">99acres</a>, 
                 <a href="https://www.magicbricks.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">MagicBricks</a>
+              </p>
+            </div>
+          )}
+
+          {/* Real-Time Scraped Properties */}
+          {scrapeLoading && (
+            <div className="rounded-3xl bg-card shadow-card p-6 text-center">
+              <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground">Scraping real-time property data...</p>
+              <p className="text-xs text-muted-foreground mt-1">Querying OpenStreetMap, Nominatim & public databases</p>
+            </div>
+          )}
+
+          {scrapedData && scrapedData.properties.length > 0 && (
+            <div className="rounded-3xl bg-card shadow-card p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
+                  <Globe className="h-4 w-4 text-primary" /> Real-Time Discovered Properties ({scrapedData.properties.length})
+                </h4>
+                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                  <Clock className="h-3 w-3" />
+                  {scrapedData.source === "cache" ? "Cached" : "Live"} · {new Date(scrapedData.scraped_at).toLocaleTimeString()}
+                </div>
+              </div>
+
+              {/* Scraped property type breakdown */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {Object.entries(
+                  scrapedData.properties.reduce<Record<string, number>>((acc, p) => {
+                    acc[p.type] = (acc[p.type] || 0) + 1;
+                    return acc;
+                  }, {})
+                ).map(([type, count]) => (
+                  <span key={type} className="px-2.5 py-1 rounded-xl text-xs font-medium bg-muted text-muted-foreground">
+                    {type}: {count}
+                  </span>
+                ))}
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {scrapedData.properties.slice(0, 30).map((p, i) => (
+                  <div key={i} className="rounded-2xl border border-border p-4 hover:shadow-card transition-all">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-primary/10 text-primary">{p.type}</span>
+                      <span className="text-[10px] text-muted-foreground">{p.distance} km</span>
+                    </div>
+                    <h5 className="text-sm font-bold text-foreground truncate">{p.name}</h5>
+                    {p.details.developer && (
+                      <p className="text-xs text-muted-foreground mt-0.5">by {p.details.developer}</p>
+                    )}
+                    {p.details.floors && (
+                      <p className="text-xs text-muted-foreground">{p.details.floors} floors</p>
+                    )}
+                    {p.details.street && (
+                      <p className="text-xs text-muted-foreground truncate">{p.details.street}</p>
+                    )}
+                    <div className="flex items-center justify-between mt-3">
+                      <span className="text-[10px] text-muted-foreground">{p.source}</span>
+                      <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] text-primary hover:underline flex items-center gap-1">
+                        View <ExternalLink className="h-2.5 w-2.5" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {scrapedData.properties.length > 30 && (
+                <p className="text-xs text-muted-foreground mt-3 text-center">
+                  Showing 30 of {scrapedData.properties.length} discovered properties
+                </p>
+              )}
+              <p className="text-[10px] text-muted-foreground mt-4">
+                Sources: <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">OpenStreetMap</a> · 
+                <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">Nominatim</a> · 
+                Analysis by <strong>Kabith Mani</strong>
               </p>
             </div>
           )}

@@ -41,6 +41,42 @@ export type Database = {
         }
         Relationships: []
       }
+      scraped_properties: {
+        Row: {
+          expires_at: string
+          id: string
+          lat: number
+          lng: number
+          location_query: string
+          properties: Json
+          radius_km: number
+          scraped_at: string
+          source: string
+        }
+        Insert: {
+          expires_at?: string
+          id?: string
+          lat: number
+          lng: number
+          location_query: string
+          properties?: Json
+          radius_km?: number
+          scraped_at?: string
+          source?: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          lat?: number
+          lng?: number
+          location_query?: string
+          properties?: Json
+          radius_km?: number
+          scraped_at?: string
+          source?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
