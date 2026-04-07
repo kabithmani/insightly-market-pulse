@@ -62,12 +62,21 @@ export default function PropertyDiscovery() {
     const osm = await discoverLocation(lat, lng, radius);
     setOsmResult(osm);
 
-    // 3. Find nearest benchmark micro-markets
+    // 3. Real-time property scraping (backend)
+    setScrapeLoading(true);
+    setLoading(false);
+    try {
+      const scraped = await scrapeProperties(lat, lng, radius, displayName);
+      setScrapedData(scraped);
+    } catch (err) {
+      console.error("Scraping failed:", err);
+    }
+    setScrapeLoading(false);
+
+    // 4. Error if nothing found
     if (found.length === 0 && osm.totalPOIs === 0) {
       setError(`No properties or places found within ${radius} km. Try increasing the radius or a different location.`);
     }
-
-    setLoading(false);
   };
 
   const handleSearch = async () => {
