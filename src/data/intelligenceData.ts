@@ -108,17 +108,17 @@ export interface LandRateTrend {
 }
 
 export const landRateTrends: LandRateTrend[] = [
-  { corridor: "Devanahalli (BIAL zone)", rateQ1_2026: "₹2,800–3,400/sq yd", vsQ1_2025: "+22%", vsQ1_2024: "+58%", city: "Bangalore" },
-  { corridor: "Yelahanka / North BLR", rateQ1_2026: "₹3,200–4,100/sq yd", vsQ1_2025: "+18%", vsQ1_2024: "+44%", city: "Bangalore" },
-  { corridor: "Sarjapur (premium zone)", rateQ1_2026: "₹4,800–6,200/sq yd", vsQ1_2025: "+25%", vsQ1_2024: "+62%", city: "Bangalore" },
-  { corridor: "Kanakapura (metro zone)", rateQ1_2026: "₹3,600–4,800/sq yd", vsQ1_2025: "+34%", vsQ1_2024: "+71%", city: "Bangalore" },
-  { corridor: "Hoskote–Malur", rateQ1_2026: "₹800–1,400/sq yd", vsQ1_2025: "+28%", vsQ1_2024: "+35%", city: "Bangalore" },
-  { corridor: "Hinjewadi Phase 3", rateQ1_2026: "₹3,200–4,500/sq yd", vsQ1_2025: "+20%", vsQ1_2024: "+48%", city: "Pune" },
-  { corridor: "Wagholi–Kharadi", rateQ1_2026: "₹2,400–3,200/sq yd", vsQ1_2025: "+24%", vsQ1_2024: "+52%", city: "Pune" },
-  { corridor: "Balewadi–Baner", rateQ1_2026: "₹4,200–5,800/sq yd", vsQ1_2025: "+17%", vsQ1_2024: "+38%", city: "Pune" },
-  { corridor: "Ulwe (Airport Zone)", rateQ1_2026: "₹4,500–6,800/sq yd", vsQ1_2025: "+28%", vsQ1_2024: "+65%", city: "Mumbai" },
-  { corridor: "Thane–Kalyan", rateQ1_2026: "₹3,800–5,200/sq yd", vsQ1_2025: "+15%", vsQ1_2024: "+32%", city: "Mumbai" },
-  { corridor: "Navi Mumbai (NMIA)", rateQ1_2026: "₹5,200–7,800/sq yd", vsQ1_2025: "+22%", vsQ1_2024: "+55%", city: "Mumbai" },
+  { corridor: "Devanahalli (BIAL zone)", rateQ1_2026: "₹311–378/sft", vsQ1_2025: "+22%", vsQ1_2024: "+58%", city: "Bangalore" },
+  { corridor: "Yelahanka / North BLR", rateQ1_2026: "₹356–456/sft", vsQ1_2025: "+18%", vsQ1_2024: "+44%", city: "Bangalore" },
+  { corridor: "Sarjapur (premium zone)", rateQ1_2026: "₹533–689/sft", vsQ1_2025: "+25%", vsQ1_2024: "+62%", city: "Bangalore" },
+  { corridor: "Kanakapura (metro zone)", rateQ1_2026: "₹400–533/sft", vsQ1_2025: "+34%", vsQ1_2024: "+71%", city: "Bangalore" },
+  { corridor: "Hoskote–Malur", rateQ1_2026: "₹89–156/sft", vsQ1_2025: "+28%", vsQ1_2024: "+35%", city: "Bangalore" },
+  { corridor: "Hinjewadi Phase 3", rateQ1_2026: "₹356–500/sft", vsQ1_2025: "+20%", vsQ1_2024: "+48%", city: "Pune" },
+  { corridor: "Wagholi–Kharadi", rateQ1_2026: "₹267–356/sft", vsQ1_2025: "+24%", vsQ1_2024: "+52%", city: "Pune" },
+  { corridor: "Balewadi–Baner", rateQ1_2026: "₹467–644/sft", vsQ1_2025: "+17%", vsQ1_2024: "+38%", city: "Pune" },
+  { corridor: "Ulwe (Airport Zone)", rateQ1_2026: "₹500–756/sft", vsQ1_2025: "+28%", vsQ1_2024: "+65%", city: "Mumbai" },
+  { corridor: "Thane–Kalyan", rateQ1_2026: "₹422–578/sft", vsQ1_2025: "+15%", vsQ1_2024: "+32%", city: "Mumbai" },
+  { corridor: "Navi Mumbai (NMIA)", rateQ1_2026: "₹578–867/sft", vsQ1_2025: "+22%", vsQ1_2024: "+55%", city: "Mumbai" },
 ];
 
 // ── Developer Strategy Tracker ──
