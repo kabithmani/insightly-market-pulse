@@ -286,7 +286,7 @@ export default function PropertyDiscovery() {
                         </div>
                         <div className="rounded-xl bg-muted/50 p-2.5">
                           <p className="text-[10px] text-muted-foreground font-medium">Sizes</p>
-                          <p className="text-xs font-bold text-foreground">{p.unitSizesMin} – {p.unitSizesMax} sqft</p>
+                          <p className="text-xs font-bold text-foreground">{p.unitSizesMin} – {p.unitSizesMax} sft</p>
                         </div>
                       </div>
                       {p.rentalYield > 0 && (

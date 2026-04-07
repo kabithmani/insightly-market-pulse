@@ -108,17 +108,17 @@ export interface LandRateTrend {
 }
 
 export const landRateTrends: LandRateTrend[] = [
-  { corridor: "Devanahalli (BIAL zone)", rateQ1_2026: "₹2,800–3,400/sq yd", vsQ1_2025: "+22%", vsQ1_2024: "+58%", city: "Bangalore" },
-  { corridor: "Yelahanka / North BLR", rateQ1_2026: "₹3,200–4,100/sq yd", vsQ1_2025: "+18%", vsQ1_2024: "+44%", city: "Bangalore" },
-  { corridor: "Sarjapur (premium zone)", rateQ1_2026: "₹4,800–6,200/sq yd", vsQ1_2025: "+25%", vsQ1_2024: "+62%", city: "Bangalore" },
-  { corridor: "Kanakapura (metro zone)", rateQ1_2026: "₹3,600–4,800/sq yd", vsQ1_2025: "+34%", vsQ1_2024: "+71%", city: "Bangalore" },
-  { corridor: "Hoskote–Malur", rateQ1_2026: "₹800–1,400/sq yd", vsQ1_2025: "+28%", vsQ1_2024: "+35%", city: "Bangalore" },
-  { corridor: "Hinjewadi Phase 3", rateQ1_2026: "₹3,200–4,500/sq yd", vsQ1_2025: "+20%", vsQ1_2024: "+48%", city: "Pune" },
-  { corridor: "Wagholi–Kharadi", rateQ1_2026: "₹2,400–3,200/sq yd", vsQ1_2025: "+24%", vsQ1_2024: "+52%", city: "Pune" },
-  { corridor: "Balewadi–Baner", rateQ1_2026: "₹4,200–5,800/sq yd", vsQ1_2025: "+17%", vsQ1_2024: "+38%", city: "Pune" },
-  { corridor: "Ulwe (Airport Zone)", rateQ1_2026: "₹4,500–6,800/sq yd", vsQ1_2025: "+28%", vsQ1_2024: "+65%", city: "Mumbai" },
-  { corridor: "Thane–Kalyan", rateQ1_2026: "₹3,800–5,200/sq yd", vsQ1_2025: "+15%", vsQ1_2024: "+32%", city: "Mumbai" },
-  { corridor: "Navi Mumbai (NMIA)", rateQ1_2026: "₹5,200–7,800/sq yd", vsQ1_2025: "+22%", vsQ1_2024: "+55%", city: "Mumbai" },
+  { corridor: "Devanahalli (BIAL zone)", rateQ1_2026: "₹311–378/sft", vsQ1_2025: "+22%", vsQ1_2024: "+58%", city: "Bangalore" },
+  { corridor: "Yelahanka / North BLR", rateQ1_2026: "₹356–456/sft", vsQ1_2025: "+18%", vsQ1_2024: "+44%", city: "Bangalore" },
+  { corridor: "Sarjapur (premium zone)", rateQ1_2026: "₹533–689/sft", vsQ1_2025: "+25%", vsQ1_2024: "+62%", city: "Bangalore" },
+  { corridor: "Kanakapura (metro zone)", rateQ1_2026: "₹400–533/sft", vsQ1_2025: "+34%", vsQ1_2024: "+71%", city: "Bangalore" },
+  { corridor: "Hoskote–Malur", rateQ1_2026: "₹89–156/sft", vsQ1_2025: "+28%", vsQ1_2024: "+35%", city: "Bangalore" },
+  { corridor: "Hinjewadi Phase 3", rateQ1_2026: "₹356–500/sft", vsQ1_2025: "+20%", vsQ1_2024: "+48%", city: "Pune" },
+  { corridor: "Wagholi–Kharadi", rateQ1_2026: "₹267–356/sft", vsQ1_2025: "+24%", vsQ1_2024: "+52%", city: "Pune" },
+  { corridor: "Balewadi–Baner", rateQ1_2026: "₹467–644/sft", vsQ1_2025: "+17%", vsQ1_2024: "+38%", city: "Pune" },
+  { corridor: "Ulwe (Airport Zone)", rateQ1_2026: "₹500–756/sft", vsQ1_2025: "+28%", vsQ1_2024: "+65%", city: "Mumbai" },
+  { corridor: "Thane–Kalyan", rateQ1_2026: "₹422–578/sft", vsQ1_2025: "+15%", vsQ1_2024: "+32%", city: "Mumbai" },
+  { corridor: "Navi Mumbai (NMIA)", rateQ1_2026: "₹578–867/sft", vsQ1_2025: "+22%", vsQ1_2024: "+55%", city: "Mumbai" },
 ];
 
 // ── Developer Strategy Tracker ──
@@ -136,8 +136,8 @@ export const developerTrackers: DeveloperTracker[] = [
   { developer: "Sobha Limited", latestMove: "₹2,340Cr Q3 FY26 pre-sales (record) · Dream Acres sold out in 48h", activityScore: 95, signal: "STRONG", city: "Bangalore" },
   { developer: "Puravankara", latestMove: "Pravami AIF second close at $180M · targeting luxury in North BLR & Sarjapur", activityScore: 72, signal: "MONITOR", city: "Bangalore" },
   { developer: "Godrej Properties", latestMove: "Active scouting for 50+ acre North BLR plots · JDA structure preferred", activityScore: 58, signal: "WATCH", city: "Bangalore" },
-  { developer: "Embassy (REIT)", latestMove: "2.4M sqft leasing pipeline · Whitefield Business District Phase 2 anchored by GCC", activityScore: 80, signal: "STRONG", city: "Bangalore" },
-  { developer: "Salarpuria Sattva", latestMove: "Q3 commercial leasing +34% · 2.1M sqft active pipeline", activityScore: 76, signal: "STEADY", city: "Bangalore" },
+  { developer: "Embassy (REIT)", latestMove: "2.4M sft leasing pipeline · Whitefield Business District Phase 2 anchored by GCC", activityScore: 80, signal: "STRONG", city: "Bangalore" },
+  { developer: "Salarpuria Sattva", latestMove: "Q3 commercial leasing +34% · 2.1M sft active pipeline", activityScore: 76, signal: "STEADY", city: "Bangalore" },
   { developer: "Total Environment", latestMove: "JDA talks for 30+ acre Kanakapura parcel · sustainable luxury segment", activityScore: 48, signal: "INTEL", city: "Bangalore" },
   { developer: "Panchshil Realty", latestMove: "Hinjewadi Phase 3 acquisition · premium office+residential township", activityScore: 85, signal: "BULLISH", city: "Pune" },
   { developer: "Godrej Properties", latestMove: "Mahalunge land bank · 2,000+ unit residential mega-launch planned Q2", activityScore: 82, signal: "BULLISH", city: "Pune" },
@@ -228,7 +228,7 @@ export interface InvestorDeal {
 
 export const investorDeals: InvestorDeal[] = [
   { title: "Puravankara · Pravami AIF", details: "Second close $180M, targeting luxury residential in North BLR, Sarjapur, Hebbal.", icon: "💰", city: "Bangalore" },
-  { title: "Embassy REIT", details: "Q3 FY26 distribution up 11% QOQ to ₹6.2/unit; 2.4M sqft leasing pipeline.", icon: "📊", city: "Bangalore" },
+  { title: "Embassy REIT", details: "Q3 FY26 distribution up 11% QOQ to ₹6.2/unit; 2.4M sft leasing pipeline.", icon: "📊", city: "Bangalore" },
   { title: "NRI Demand Surge", details: "38-47% of pre-sales at premium launches; UAE/Singapore NRIs prioritise airport proximity.", icon: "✈️", city: "Bangalore" },
   { title: "Panchshil AIF", details: "₹800Cr fund for Pune commercial assets; targeting 14-16% IRR.", icon: "💰", city: "Pune" },
   { title: "Blackstone", details: "₹2,400Cr warehousing portfolio expansion in Chakan-Talegaon corridor.", icon: "🏭", city: "Pune" },

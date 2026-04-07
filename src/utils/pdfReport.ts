@@ -153,7 +153,7 @@ ${topCMI.name} emerges as the standout performer with a Capital Momentum Index (
 
 In terms of year-over-year appreciation, ${topYOY.name} leads with an impressive ${topYOY.yoy_change}% growth, outpacing other micro-markets significantly. This surge can be attributed to improving connectivity, upcoming infrastructure projects, and growing demand from both domestic buyers and NRI investors.
 
-The price spectrum ranges from ₹${cheapest.avg_psf.toLocaleString("en-IN")}/sq ft in ${cheapest.name} to ₹${priciest.avg_psf.toLocaleString("en-IN")}/sq ft in ${priciest.name}, offering opportunities across different budget segments. Value investors may find ${cheapest.name} particularly attractive given its growth trajectory and proximity to employment hubs.
+The price spectrum ranges from ₹${cheapest.avg_psf.toLocaleString("en-IN")}/sft in ${cheapest.name} to ₹${priciest.avg_psf.toLocaleString("en-IN")}/sft in ${priciest.name}, offering opportunities across different budget segments. Value investors may find ${cheapest.name} particularly attractive given its growth trajectory and proximity to employment hubs.
 
 Our intelligence tracking has identified ${totalDeals} significant land deals and ${totalInfra} infrastructure developments across these markets. These transactions, often involving institutional players and shell entities, serve as leading indicators of future price appreciation and development activity. Investors are advised to monitor these signals closely and align their investment thesis with the infrastructure timeline for optimal returns.`;
 }

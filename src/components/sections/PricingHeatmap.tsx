@@ -94,7 +94,7 @@ export default function PricingHeatmap({ city }: Props) {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* PSF Comparison */}
         <div className="rounded-3xl bg-card shadow-card p-6">
-          <h3 className="text-lg font-bold text-foreground mb-1">Price per Sq Ft Comparison</h3>
+          <h3 className="text-lg font-bold text-foreground mb-1">Price per Sft Comparison</h3>
           <p className="text-sm text-muted-foreground mb-4">Sorted by CMI score</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">

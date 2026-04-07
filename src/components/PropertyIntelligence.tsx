@@ -70,8 +70,8 @@ export default function PropertyIntelligence({ property, city }: Props) {
 
           <div className="text-right shrink-0">
             <p className="text-2xl font-black text-foreground">{property.priceRange}</p>
-            <p className="text-sm text-muted-foreground">₹{property.psfMin.toLocaleString("en-IN")} – {property.psfMax.toLocaleString("en-IN")} per sqft</p>
-            <p className="text-xs text-muted-foreground mt-1">{property.unitConfig} · {property.unitSizesMin}–{property.unitSizesMax} sqft</p>
+            <p className="text-sm text-muted-foreground">₹{property.psfMin.toLocaleString("en-IN")} – {property.psfMax.toLocaleString("en-IN")} per sft</p>
+            <p className="text-xs text-muted-foreground mt-1">{property.unitConfig} · {property.unitSizesMin}–{property.unitSizesMax} sft</p>
           </div>
         </div>
 
@@ -92,7 +92,7 @@ export default function PropertyIntelligence({ property, city }: Props) {
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <BenchmarkCard label="Avg Buying PSF" value={`₹${benchmark.avgBuyingPsf.toLocaleString("en-IN")}`} />
-            <BenchmarkCard label="Avg Rental PSF" value={`₹${benchmark.avgRentalPsf}/sqft/mo`} />
+            <BenchmarkCard label="Avg Rental PSF" value={`₹${benchmark.avgRentalPsf}/sft/mo`} />
             <BenchmarkCard label="Rental Yield" value={`${benchmark.rentalYield}%`} />
             <BenchmarkCard label="Active Listings" value={benchmark.activeListings.toString()} />
           </div>
@@ -224,7 +224,7 @@ export default function PropertyIntelligence({ property, city }: Props) {
           <p>
             <strong className="text-foreground">Price Position:</strong>{" "}
             {isAboveMarket
-              ? `This property is priced ${psfDelta}% above the ${property.microMarket} market average of ₹${benchmarkPsf.toLocaleString("en-IN")}/sqft. This premium is ${Number(psfDelta) > 10 ? "significant — ensure the builder brand, amenities, and location justify the markup" : "within acceptable range for a branded project"}.`
+              ? `This property is priced ${psfDelta}% above the ${property.microMarket} market average of ₹${benchmarkPsf.toLocaleString("en-IN")}/sft. This premium is ${Number(psfDelta) > 10 ? "significant — ensure the builder brand, amenities, and location justify the markup" : "within acceptable range for a branded project"}.`
               : `This property is priced ${Math.abs(Number(psfDelta))}% below the market average — potentially offering value entry for investors.`
             }
           </p>
@@ -247,7 +247,7 @@ export default function PropertyIntelligence({ property, city }: Props) {
           {property.rentalYield > 0 && (
             <p>
               <strong className="text-foreground">Rental Perspective:</strong>{" "}
-              Estimated rental yield of {property.rentalYield}% at ₹{property.avgRentalPsf}/sqft/month.
+              Estimated rental yield of {property.rentalYield}% at ₹{property.avgRentalPsf}/sft/month.
               {property.rentalYield >= 3.5 ? " Above-average yield — attractive for rental income investors." : property.rentalYield >= 2.5 ? " Market-rate yield. Capital appreciation is the primary return driver." : " Below-average yield typical of premium locations. Pure capital play."}
             </p>
           )}
