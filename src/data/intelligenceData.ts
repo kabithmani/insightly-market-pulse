@@ -136,8 +136,8 @@ export const developerTrackers: DeveloperTracker[] = [
   { developer: "Sobha Limited", latestMove: "₹2,340Cr Q3 FY26 pre-sales (record) · Dream Acres sold out in 48h", activityScore: 95, signal: "STRONG", city: "Bangalore" },
   { developer: "Puravankara", latestMove: "Pravami AIF second close at $180M · targeting luxury in North BLR & Sarjapur", activityScore: 72, signal: "MONITOR", city: "Bangalore" },
   { developer: "Godrej Properties", latestMove: "Active scouting for 50+ acre North BLR plots · JDA structure preferred", activityScore: 58, signal: "WATCH", city: "Bangalore" },
-  { developer: "Embassy (REIT)", latestMove: "2.4M sqft leasing pipeline · Whitefield Business District Phase 2 anchored by GCC", activityScore: 80, signal: "STRONG", city: "Bangalore" },
-  { developer: "Salarpuria Sattva", latestMove: "Q3 commercial leasing +34% · 2.1M sqft active pipeline", activityScore: 76, signal: "STEADY", city: "Bangalore" },
+  { developer: "Embassy (REIT)", latestMove: "2.4M sft leasing pipeline · Whitefield Business District Phase 2 anchored by GCC", activityScore: 80, signal: "STRONG", city: "Bangalore" },
+  { developer: "Salarpuria Sattva", latestMove: "Q3 commercial leasing +34% · 2.1M sft active pipeline", activityScore: 76, signal: "STEADY", city: "Bangalore" },
   { developer: "Total Environment", latestMove: "JDA talks for 30+ acre Kanakapura parcel · sustainable luxury segment", activityScore: 48, signal: "INTEL", city: "Bangalore" },
   { developer: "Panchshil Realty", latestMove: "Hinjewadi Phase 3 acquisition · premium office+residential township", activityScore: 85, signal: "BULLISH", city: "Pune" },
   { developer: "Godrej Properties", latestMove: "Mahalunge land bank · 2,000+ unit residential mega-launch planned Q2", activityScore: 82, signal: "BULLISH", city: "Pune" },
@@ -228,7 +228,7 @@ export interface InvestorDeal {
 
 export const investorDeals: InvestorDeal[] = [
   { title: "Puravankara · Pravami AIF", details: "Second close $180M, targeting luxury residential in North BLR, Sarjapur, Hebbal.", icon: "💰", city: "Bangalore" },
-  { title: "Embassy REIT", details: "Q3 FY26 distribution up 11% QOQ to ₹6.2/unit; 2.4M sqft leasing pipeline.", icon: "📊", city: "Bangalore" },
+  { title: "Embassy REIT", details: "Q3 FY26 distribution up 11% QOQ to ₹6.2/unit; 2.4M sft leasing pipeline.", icon: "📊", city: "Bangalore" },
   { title: "NRI Demand Surge", details: "38-47% of pre-sales at premium launches; UAE/Singapore NRIs prioritise airport proximity.", icon: "✈️", city: "Bangalore" },
   { title: "Panchshil AIF", details: "₹800Cr fund for Pune commercial assets; targeting 14-16% IRR.", icon: "💰", city: "Pune" },
   { title: "Blackstone", details: "₹2,400Cr warehousing portfolio expansion in Chakan-Talegaon corridor.", icon: "🏭", city: "Pune" },
