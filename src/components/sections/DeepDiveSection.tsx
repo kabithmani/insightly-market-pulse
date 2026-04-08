@@ -1,17 +1,42 @@
-import { BookOpen } from "lucide-react";
+import { BookOpen, Loader2 } from "lucide-react";
 import { deepDives } from "@/data/intelligenceData";
 
-interface Props { city: string; }
+interface Props {
+  city: string;
+  location?: string;
+  dynamic?: {
+    title: string;
+    subtitle: string;
+    content: string[];
+    scores: { category: string; score: number }[];
+    verdict: string;
+  };
+  loading?: boolean;
+}
 
-export default function DeepDiveSection({ city }: Props) {
-  const dive = deepDives.find(d => d.city === city);
-  if (!dive) return null;
+export default function DeepDiveSection({ city, location, dynamic, loading }: Props) {
+  if (loading) return <LoadingState />;
+
+  const isPreFed = ["Bangalore", "Pune", "Mumbai"].includes(city);
+  const useDynamic = dynamic && !isPreFed;
+
+  const dive = useDynamic ? dynamic : deepDives.find(d => d.city === city);
+  if (!dive) return (
+    <div className="rounded-3xl bg-card shadow-card p-12 text-center">
+      <p className="text-sm text-muted-foreground">No deep dive available for this location yet. Search a major market to see analysis.</p>
+    </div>
+  );
 
   const overallScore = (dive.scores.reduce((s, c) => s + c.score, 0) / dive.scores.length).toFixed(1);
 
   return (
     <div className="space-y-6 animate-[fade-in_0.4s_ease-out]">
-      {/* Article */}
+      {location && (
+        <div className="rounded-2xl bg-primary/10 px-4 py-2">
+          <p className="text-xs font-semibold text-primary">📍 Deep Dive: {location}</p>
+        </div>
+      )}
+
       <div className="rounded-3xl bg-card shadow-card p-6 md:p-8">
         <div className="flex items-center gap-3 mb-6">
           <div className="h-10 w-10 rounded-2xl gradient-primary flex items-center justify-center">
@@ -32,7 +57,6 @@ export default function DeepDiveSection({ city }: Props) {
         </div>
       </div>
 
-      {/* FinCity Summary Score */}
       <div className="rounded-3xl bg-card shadow-card p-6 md:p-8">
         <h3 className="text-lg font-bold text-foreground mb-6">Intelligence Summary Score</h3>
         <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-6">
@@ -48,16 +72,13 @@ export default function DeepDiveSection({ city }: Props) {
                     strokeDasharray={`${(s.score / 10) * 213.6} 213.6`}
                   />
                 </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-foreground">
-                  {s.score}
-                </span>
+                <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-foreground">{s.score}</span>
               </div>
               <p className="text-xs font-medium text-muted-foreground">{s.category}</p>
             </div>
           ))}
         </div>
 
-        {/* Overall */}
         <div className="rounded-2xl gradient-primary p-6 text-center">
           <p className="text-primary-foreground/80 text-xs font-medium uppercase tracking-wider">Overall CMI Score</p>
           <p className="text-4xl font-black text-primary-foreground mt-1">{overallScore}</p>
@@ -65,11 +86,19 @@ export default function DeepDiveSection({ city }: Props) {
         </div>
       </div>
 
-      {/* Verdict */}
       <div className="rounded-3xl bg-accent/5 border-2 border-accent/30 p-6">
         <h4 className="font-bold text-foreground text-sm mb-2">⚖️ Verdict</h4>
         <p className="text-sm text-muted-foreground leading-relaxed">{dive.verdict}</p>
       </div>
+    </div>
+  );
+}
+
+function LoadingState() {
+  return (
+    <div className="rounded-3xl bg-card shadow-card p-12 text-center animate-pulse">
+      <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-3" />
+      <p className="text-sm font-medium text-foreground">Generating deep dive analysis...</p>
     </div>
   );
 }
