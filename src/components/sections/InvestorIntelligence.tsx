@@ -1,13 +1,40 @@
 import { investorDeals, capRates } from "@/data/intelligenceData";
+import { Loader2 } from "lucide-react";
 
-interface Props { city: string; }
+interface Props {
+  city: string;
+  location?: string;
+  dynamic?: {
+    deals: { title: string; details: string; icon: string }[];
+    insight: string;
+  };
+  loading?: boolean;
+}
 
-export default function InvestorIntelligence({ city }: Props) {
-  const deals = investorDeals.filter(d => d.city === city);
+export default function InvestorIntelligence({ city, location, dynamic, loading }: Props) {
+  if (loading) return <LoadingState />;
+
+  const isPreFed = ["Bangalore", "Pune", "Mumbai"].includes(city);
+  const useDynamic = dynamic && !isPreFed;
+
+  const deals = useDynamic ? dynamic.deals : investorDeals.filter(d => d.city === city);
+
+  const insight = useDynamic
+    ? dynamic.insight
+    : city === "Bangalore"
+    ? "Institutional capital is flowing into Bangalore at unprecedented levels. Puravankara's $180M AIF and Embassy REIT's expanding portfolio signal deep confidence."
+    : city === "Pune"
+    ? "Pune is emerging as a preferred institutional destination, with Panchshil's ₹800Cr AIF and Blackstone's warehousing expansion."
+    : "Mumbai remains India's deepest institutional market. GIC's ₹4,200Cr BKC deal and Brookfield's portfolio expansion confirm the city's safe-haven status.";
 
   return (
     <div className="space-y-6 animate-[fade-in_0.4s_ease-out]">
-      {/* Deal Cards */}
+      {location && (
+        <div className="rounded-2xl bg-primary/10 px-4 py-2">
+          <p className="text-xs font-semibold text-primary">📍 Investor Intelligence: {location}</p>
+        </div>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {deals.map((d, i) => (
           <div key={i} className="rounded-3xl bg-card shadow-card p-6 hover:shadow-lg transition-shadow">
@@ -18,7 +45,6 @@ export default function InvestorIntelligence({ city }: Props) {
         ))}
       </div>
 
-      {/* Cap Rate Table */}
       <div className="rounded-3xl bg-card shadow-card overflow-hidden">
         <div className="p-6 border-b border-border">
           <h3 className="text-lg font-bold text-foreground">Cap Rate & Yield Intelligence</h3>
@@ -46,9 +72,7 @@ export default function InvestorIntelligence({ city }: Props) {
                       c.appetite === "RISING" ? "bg-blue-100 text-blue-700" :
                       c.appetite === "BREAKOUT" ? "bg-purple-100 text-purple-700" :
                       "bg-amber-100 text-amber-700"
-                    }`}>
-                      {c.appetite}
-                    </span>
+                    }`}>{c.appetite}</span>
                   </td>
                 </tr>
               ))}
@@ -59,12 +83,17 @@ export default function InvestorIntelligence({ city }: Props) {
 
       <div className="rounded-3xl bg-primary/5 border border-primary/20 p-6">
         <h4 className="font-bold text-foreground text-sm mb-2">📊 Investment Outlook</h4>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {city === "Bangalore" && "Institutional capital is flowing into Bangalore at unprecedented levels. Puravankara's $180M AIF and Embassy REIT's expanding portfolio signal deep confidence. Grade-A office cap rates compressing to 7.2-8.1% indicate pricing power. NRI demand at 38-47% is structurally reshaping the luxury segment. Key thesis: airport-proximate assets and North Bangalore land plays offer the best risk-adjusted returns over a 3-5 year horizon."}
-          {city === "Pune" && "Pune is emerging as a preferred institutional destination, with Panchshil's ₹800Cr AIF and Blackstone's warehousing expansion. The IT corridor's fundamentals – low vacancy, strong absorption – support continued cap rate compression. Mid-premium residential offers the best entry point."}
-          {city === "Mumbai" && "Mumbai remains India's deepest institutional market. GIC's ₹4,200Cr BKC deal and Brookfield's portfolio expansion confirm the city's safe-haven status. The NMIA corridor offers a rare growth play in an otherwise mature market. Ultra-premium (Worli, BKC) and growth corridors (Ulwe, Kharghar) represent two distinct but equally compelling investment theses."}
-        </p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{insight}</p>
       </div>
+    </div>
+  );
+}
+
+function LoadingState() {
+  return (
+    <div className="rounded-3xl bg-card shadow-card p-12 text-center animate-pulse">
+      <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-3" />
+      <p className="text-sm font-medium text-foreground">Analyzing investor intelligence...</p>
     </div>
   );
 }

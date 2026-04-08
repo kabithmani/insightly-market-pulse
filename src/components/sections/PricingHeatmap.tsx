@@ -1,7 +1,15 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ScatterChart, Scatter, ZAxis } from "recharts";
 import { microMarkets } from "@/data/microMarkets";
+import { Loader2 } from "lucide-react";
 
-interface Props { city: string; }
+interface Props {
+  city: string;
+  location?: string;
+  dynamic?: {
+    markets: { name: string; avgPsf: number; yoyChange: number; cmi: number }[];
+  };
+  loading?: boolean;
+}
 
 function getCMIColor(cmi: number): string {
   if (cmi >= 8.5) return "bg-red-500";
@@ -22,8 +30,15 @@ function getTrend(yoy: number): string {
   return "► Stable";
 }
 
-export default function PricingHeatmap({ city }: Props) {
-  const markets = microMarkets.filter(m => m.city === city).sort((a, b) => b.cmi - a.cmi);
+export default function PricingHeatmap({ city, location, dynamic, loading }: Props) {
+  if (loading) return <LoadingState />;
+
+  const isPreFed = ["Bangalore", "Pune", "Mumbai"].includes(city);
+  const useDynamic = dynamic && !isPreFed;
+
+  const markets = useDynamic
+    ? dynamic.markets.map(m => ({ name: m.name, avg_psf: m.avgPsf, yoy_change: m.yoyChange, cmi: m.cmi }))
+    : microMarkets.filter(m => m.city === city).sort((a, b) => b.cmi - a.cmi);
 
   const chartData = markets.map(m => ({
     name: m.name,
@@ -41,12 +56,17 @@ export default function PricingHeatmap({ city }: Props) {
 
   return (
     <div className="space-y-6 animate-[fade-in_0.4s_ease-out]">
-      {/* Heatmap Table */}
+      {location && (
+        <div className="rounded-2xl bg-primary/10 px-4 py-2">
+          <p className="text-xs font-semibold text-primary">📍 Pricing Heatmap: {location}</p>
+        </div>
+      )}
+
       <div className="rounded-3xl bg-card shadow-card overflow-hidden">
         <div className="p-6 border-b border-border">
           <h3 className="text-lg font-bold text-foreground">Corridor Pricing Heatmap</h3>
           <p className="text-sm text-muted-foreground">
-            Average transacted residential PSF · March 2026 · CMI = Corridor Momentum Index (0-10)
+            Average transacted residential PSF · {useDynamic ? "AI-Generated" : "March 2026"} · CMI = Corridor Momentum Index (0-10)
           </p>
         </div>
         <div className="overflow-x-auto">
@@ -66,21 +86,14 @@ export default function PricingHeatmap({ city }: Props) {
                 <tr key={m.name} className={i % 2 === 0 ? "" : "bg-muted/20"}>
                   <td className="p-3 font-semibold text-foreground">{m.name}</td>
                   <td className="p-3 text-right text-foreground font-medium">₹{m.avg_psf.toLocaleString("en-IN")}</td>
-                  <td className={`p-3 text-right font-bold ${m.yoy_change >= 15 ? "text-green-600" : m.yoy_change >= 10 ? "text-blue-600" : "text-foreground"}`}>
-                    +{m.yoy_change}%
-                  </td>
+                  <td className={`p-3 text-right font-bold ${m.yoy_change >= 15 ? "text-green-600" : m.yoy_change >= 10 ? "text-blue-600" : "text-foreground"}`}>+{m.yoy_change}%</td>
                   <td className="p-3 text-center text-xs font-medium text-muted-foreground">{getTrend(m.yoy_change)}</td>
                   <td className="p-3 text-center">
-                    <span className={`inline-flex items-center justify-center w-10 h-7 rounded-lg text-xs font-bold ${getCMIColor(m.cmi)} ${getCMITextColor(m.cmi)}`}>
-                      {m.cmi}
-                    </span>
+                    <span className={`inline-flex items-center justify-center w-10 h-7 rounded-lg text-xs font-bold ${getCMIColor(m.cmi)} ${getCMITextColor(m.cmi)}`}>{m.cmi}</span>
                   </td>
                   <td className="p-3">
                     <div className="w-full bg-muted rounded-full h-2.5">
-                      <div
-                        className={`h-2.5 rounded-full ${m.cmi >= 8.5 ? "bg-red-500" : m.cmi >= 8.0 ? "bg-orange-500" : m.cmi >= 7.5 ? "bg-amber-400" : "bg-green-400"}`}
-                        style={{ width: `${(m.cmi / 10) * 100}%` }}
-                      />
+                      <div className={`h-2.5 rounded-full ${m.cmi >= 8.5 ? "bg-red-500" : m.cmi >= 8.0 ? "bg-orange-500" : m.cmi >= 7.5 ? "bg-amber-400" : "bg-green-400"}`} style={{ width: `${(m.cmi / 10) * 100}%` }} />
                     </div>
                   </td>
                 </tr>
@@ -90,9 +103,7 @@ export default function PricingHeatmap({ city }: Props) {
         </div>
       </div>
 
-      {/* Charts */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* PSF Comparison */}
         <div className="rounded-3xl bg-card shadow-card p-6">
           <h3 className="text-lg font-bold text-foreground mb-1">Price per Sft Comparison</h3>
           <p className="text-sm text-muted-foreground mb-4">Sorted by CMI score</p>
@@ -102,21 +113,15 @@ export default function PricingHeatmap({ city }: Props) {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
                 <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <Tooltip
-                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 16, fontSize: 12 }}
-                  formatter={(value: number) => [`₹${value.toLocaleString("en-IN")}`, "Avg PSF"]}
-                />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 16, fontSize: 12 }} formatter={(value: number) => [`₹${value.toLocaleString("en-IN")}`, "Avg PSF"]} />
                 <Bar dataKey="psf" radius={[6, 6, 0, 0]}>
-                  {chartData.map((d, i) => (
-                    <Cell key={i} fill={d.cmi >= 8.5 ? "hsl(var(--accent))" : d.cmi >= 8.0 ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"} />
-                  ))}
+                  {chartData.map((d, i) => <Cell key={i} fill={d.cmi >= 8.5 ? "hsl(var(--accent))" : d.cmi >= 8.0 ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"} />)}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* CMI vs YOY Scatter */}
         <div className="rounded-3xl bg-card shadow-card p-6">
           <h3 className="text-lg font-bold text-foreground mb-1">CMI vs YOY Appreciation</h3>
           <p className="text-sm text-muted-foreground mb-4">Bubble size = Avg PSF</p>
@@ -124,18 +129,14 @@ export default function PricingHeatmap({ city }: Props) {
             <ResponsiveContainer width="100%" height="100%">
               <ScatterChart margin={{ left: 10, right: 20, bottom: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis type="number" dataKey="x" name="YOY %" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} label={{ value: "YOY %", position: "bottom", fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <YAxis type="number" dataKey="y" name="CMI" domain={[6, 10]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} label={{ value: "CMI", angle: -90, position: "insideLeft", fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+                <XAxis type="number" dataKey="x" name="YOY %" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+                <YAxis type="number" dataKey="y" name="CMI" domain={[6, 10]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <ZAxis type="number" dataKey="z" range={[40, 400]} />
-                <Tooltip
-                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 16, fontSize: 12 }}
-                  formatter={(value: number, name: string) => {
-                    if (name === "YOY %") return [`${value}%`, name];
-                    if (name === "CMI") return [value, name];
-                    return [`₹${value.toLocaleString("en-IN")}`, "Avg PSF"];
-                  }}
-                  labelFormatter={(_, payload) => payload?.[0]?.payload?.name || ""}
-                />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 16, fontSize: 12 }} formatter={(value: number, name: string) => {
+                  if (name === "YOY %") return [`${value}%`, name];
+                  if (name === "CMI") return [value, name];
+                  return [`₹${value.toLocaleString("en-IN")}`, "Avg PSF"];
+                }} labelFormatter={(_, payload) => payload?.[0]?.payload?.name || ""} />
                 <Scatter data={scatterData} fill="hsl(var(--primary))" fillOpacity={0.7} />
               </ScatterChart>
             </ResponsiveContainer>
@@ -143,7 +144,6 @@ export default function PricingHeatmap({ city }: Props) {
         </div>
       </div>
 
-      {/* CMI Methodology */}
       <div className="rounded-3xl bg-muted/30 border border-border p-6">
         <h4 className="font-bold text-foreground text-sm mb-3">📐 CMI Methodology</h4>
         <p className="text-sm text-muted-foreground mb-3">The Corridor Momentum Index (CMI) is a composite score (0-10) based on:</p>
@@ -162,6 +162,15 @@ export default function PricingHeatmap({ city }: Props) {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function LoadingState() {
+  return (
+    <div className="rounded-3xl bg-card shadow-card p-12 text-center animate-pulse">
+      <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-3" />
+      <p className="text-sm font-medium text-foreground">Generating pricing heatmap...</p>
     </div>
   );
 }
