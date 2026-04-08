@@ -12,6 +12,7 @@ import PropertyIntelligence from "@/components/PropertyIntelligence";
 import LocationMap from "@/components/LocationMap";
 import CoverageRequestForm from "@/components/CoverageRequestForm";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { SearchContext } from "@/hooks/useSearchContext";
 
 const TYPE_ICONS: Record<PropertyType, typeof Building2> = {
   Apartment: Building2, Villa: Home, Plot: LandPlot, Commercial: Store,
@@ -25,7 +26,11 @@ const STATUS_COLORS: Record<string, string> = {
   "Pre-Launch": "bg-purple-100 text-purple-700", "Nearing Possession": "bg-amber-100 text-amber-700",
 };
 
-export default function PropertyDiscovery() {
+interface Props {
+  onSearchComplete?: (ctx: SearchContext) => void;
+}
+
+export default function PropertyDiscovery({ onSearchComplete }: Props) {
   const [location, setLocation] = useState("");
   const [radius, setRadius] = useState(25);
   const [loading, setLoading] = useState(false);
@@ -46,23 +51,29 @@ export default function PropertyDiscovery() {
     setGeocodedName(displayName);
     setGeoCoords({ lat, lng });
 
-    // Detect city from display name
     const cityMatch = ["Bangalore", "Bengaluru", "Pune", "Mumbai"].find(c =>
       displayName.toLowerCase().includes(c.toLowerCase())
     );
     const city = cityMatch === "Bengaluru" ? "Bangalore" : cityMatch || "";
     setDetectedCity(city);
 
-    // 1. Check verified property database
+    // Notify parent about search context
+    onSearchComplete?.({
+      location: displayName,
+      city,
+      lat,
+      lng,
+      radius,
+      searched: true,
+    });
+
     const found = getPropertiesInRadius(lat, lng, radius, city || undefined);
     setProperties(found.length > 0 ? found : null);
     setHasVerifiedData(found.length > 0);
 
-    // 2. Discover real places via OSM Overpass API
     const osm = await discoverLocation(lat, lng, radius);
     setOsmResult(osm);
 
-    // 3. Real-time property scraping (backend)
     setScrapeLoading(true);
     setLoading(false);
     try {
@@ -73,7 +84,6 @@ export default function PropertyDiscovery() {
     }
     setScrapeLoading(false);
 
-    // 4. Error if nothing found
     if (found.length === 0 && osm.totalPOIs === 0) {
       setError(`No properties or places found within ${radius} km. Try increasing the radius or a different location.`);
     }
@@ -95,7 +105,6 @@ export default function PropertyDiscovery() {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
-        // Reverse geocode to get display name
         const geo = await geocodeLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
         const display = geo?.displayName || `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
         setLocation(display.split(",")[0]);
@@ -116,7 +125,6 @@ export default function PropertyDiscovery() {
   const insights = properties ? computeMarketInsights(properties) : null;
   const osmInsights = osmResult ? generateLocationIntelligence(osmResult) : [];
 
-  // Nearest benchmarks (for areas without verified data)
   const nearestBenchmarks = geoCoords
     ? microMarkets
         .map(m => ({ ...m, dist: haversineDistance(geoCoords.lat, geoCoords.lng, m.lat, m.lng) }))
@@ -176,15 +184,21 @@ export default function PropertyDiscovery() {
 
         {error && <p className="mt-3 text-sm text-destructive flex items-center gap-2"><Info className="h-4 w-4" /> {error}</p>}
 
-        <Button onClick={handleSearch} disabled={loading} className="mt-4 h-11 px-8 rounded-2xl gradient-primary text-primary-foreground shadow-button">
-          {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Discovering... (may take 10-15s)</> : <><Search className="mr-2 h-4 w-4" /> Discover Properties</>}
-        </Button>
+        <div className="flex items-center gap-3 mt-4">
+          <Button onClick={handleSearch} disabled={loading} className="h-11 px-8 rounded-2xl gradient-primary text-primary-foreground shadow-button">
+            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Discovering... (may take 10-15s)</> : <><Search className="mr-2 h-4 w-4" /> Discover Properties</>}
+          </Button>
+          {geoCoords && (
+            <p className="text-xs text-muted-foreground">
+              ✅ Intelligence tabs now reflect this location
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Map + Results */}
       {geoCoords && (osmResult || properties) && (
         <>
-          {/* Interactive Map */}
           <LocationMap
             center={geoCoords}
             radiusKm={radius}
@@ -233,7 +247,6 @@ export default function PropertyDiscovery() {
                 <p className="text-xs text-green-700 mt-1">{properties.length} verified listings with pricing, RERA IDs, and intelligence data</p>
               </div>
 
-              {/* Quick Stats */}
               <div className="grid gap-3 grid-cols-2 lg:grid-cols-5">
                 <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Avg PSF" value={`₹${insights.avgPsf.toLocaleString("en-IN")}`} color="text-accent" />
                 <StatCard icon={<Home className="h-5 w-5" />} label="Available Units" value={insights.totalUnits.toLocaleString("en-IN")} color="text-primary" />
@@ -242,7 +255,6 @@ export default function PropertyDiscovery() {
                 <StatCard icon={<Building2 className="h-5 w-5" />} label="Total Properties" value={insights.totalProperties.toString()} color="text-primary" />
               </div>
 
-              {/* Type Distribution Chart */}
               {typeDistribution.length > 0 && (
                 <div className="rounded-3xl bg-card shadow-card p-6">
                   <h4 className="text-sm font-bold text-foreground mb-4">Property Type Distribution</h4>
@@ -259,7 +271,6 @@ export default function PropertyDiscovery() {
                 </div>
               )}
 
-              {/* Filters */}
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-xs font-semibold text-muted-foreground mr-2">Filter:</span>
                 {(["All", "Apartment", "Villa", "Plot", "Commercial"] as const).map(t => (
@@ -271,7 +282,6 @@ export default function PropertyDiscovery() {
                 ))}
               </div>
 
-              {/* Property Cards */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {filtered.map(p => {
                   const Icon = TYPE_ICONS[p.type];
@@ -376,7 +386,6 @@ export default function PropertyDiscovery() {
                 </div>
               </div>
 
-              {/* Scraped property type breakdown */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {Object.entries(
                   scrapedData.properties.reduce<Record<string, number>>((acc, p) => {
