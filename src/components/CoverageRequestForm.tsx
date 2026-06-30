@@ -18,14 +18,15 @@ export default function CoverageRequestForm({ location, lat, lng }: Props) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Use type assertion since table may not be in generated types yet
-      const { error } = await (supabase as any).from("coverage_requests").insert({
-        location_name: location,
-        lat,
-        lng,
-        email: email || null,
+      const { error } = await supabase.functions.invoke("submit-coverage-request", {
+        body: {
+          location_name: location,
+          lat,
+          lng,
+          email: email || undefined,
+        },
       });
-      if (error) console.error("Coverage request error:", error);
+      if (error) console.error("Coverage request error:", error.message);
       setSubmitted(true);
     } catch {
       setSubmitted(true);
