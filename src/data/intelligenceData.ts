@@ -1,5 +1,10 @@
 // Real Estate Intelligence – Comprehensive Data Layer
-// All data modeled after Intelligence Report Issue #4, March 1-15, 2026 · by Kabith Mani
+// All period-dependent labels are derived from REPORT_PERIOD (see src/utils/period.ts)
+// so the report always shows "as of today" rather than a stale issue date.
+import { REPORT_PERIOD } from "@/utils/period";
+
+const CURR_MONTH = REPORT_PERIOD.monthLabel;       // e.g. "Jun 2026"
+const PREV_YEAR_MONTH = REPORT_PERIOD.prevYearMonthLabel; // e.g. "Jun 2025"
 
 // ── Market Performance Metrics ──
 export interface MarketMetric {
@@ -11,7 +16,7 @@ export interface MarketMetric {
 }
 
 export const bangaloreMarketMetrics: MarketMetric[] = [
-  { metric: "RERA Registrations", currentCycle: "5,842 units (Feb 2026)", previousCycle: "4,749 units (Feb 2025)", change: "+23% YOY", signal: "STRONG" },
+  { metric: "RERA Registrations", currentCycle: `5,842 units (${CURR_MONTH})`, previousCycle: `4,749 units (${PREV_YEAR_MONTH})`, change: "+23% YOY", signal: "STRONG" },
   { metric: "New Project Launches (15D)", currentCycle: "14 projects", previousCycle: "9 projects", change: "+56% YOY", signal: "STRONG" },
   { metric: "Luxury Segment Units", currentCycle: "612 units", previousCycle: "434 units", change: "+41% YOY", signal: "STRONG" },
   { metric: "Avg Days-to-Sell (Premium)", currentCycle: "18 days", previousCycle: "31 days", change: "−42% (faster)", signal: "STRONG" },
@@ -21,7 +26,7 @@ export const bangaloreMarketMetrics: MarketMetric[] = [
 ];
 
 export const puneMarketMetrics: MarketMetric[] = [
-  { metric: "RERA Registrations", currentCycle: "4,120 units (Feb 2026)", previousCycle: "3,580 units (Feb 2025)", change: "+15% YOY", signal: "RISING" },
+  { metric: "RERA Registrations", currentCycle: `4,120 units (${CURR_MONTH})`, previousCycle: `3,580 units (${PREV_YEAR_MONTH})`, change: "+15% YOY", signal: "RISING" },
   { metric: "New Project Launches (15D)", currentCycle: "11 projects", previousCycle: "8 projects", change: "+38% YOY", signal: "STRONG" },
   { metric: "Luxury Segment Units", currentCycle: "285 units", previousCycle: "198 units", change: "+44% YOY", signal: "STRONG" },
   { metric: "Avg Days-to-Sell (Premium)", currentCycle: "24 days", previousCycle: "38 days", change: "−37% (faster)", signal: "RISING" },
@@ -31,7 +36,7 @@ export const puneMarketMetrics: MarketMetric[] = [
 ];
 
 export const mumbaiMarketMetrics: MarketMetric[] = [
-  { metric: "RERA Registrations", currentCycle: "8,420 units (Feb 2026)", previousCycle: "7,210 units (Feb 2025)", change: "+17% YOY", signal: "STRONG" },
+  { metric: "RERA Registrations", currentCycle: `8,420 units (${CURR_MONTH})`, previousCycle: `7,210 units (${PREV_YEAR_MONTH})`, change: "+17% YOY", signal: "STRONG" },
   { metric: "New Project Launches (15D)", currentCycle: "18 projects", previousCycle: "14 projects", change: "+29% YOY", signal: "STRONG" },
   { metric: "Luxury Segment Units", currentCycle: "890 units", previousCycle: "620 units", change: "+44% YOY", signal: "STRONG" },
   { metric: "Avg Days-to-Sell (Premium)", currentCycle: "22 days", previousCycle: "35 days", change: "−37% (faster)", signal: "STRONG" },
@@ -101,24 +106,24 @@ export const landDeals: LandDeal[] = [
 // ── Land Rate Trends ──
 export interface LandRateTrend {
   corridor: string;
-  rateQ1_2026: string;
-  vsQ1_2025: string;
-  vsQ1_2024: string;
+  currentRate: string;     // rate for the current quarter (REPORT_PERIOD.quarterLabel)
+  vsLastYear: string;      // change vs same quarter last year
+  vs2YearsAgo: string;     // change vs same quarter two years ago
   city: string;
 }
 
 export const landRateTrends: LandRateTrend[] = [
-  { corridor: "Devanahalli (BIAL zone)", rateQ1_2026: "₹311–378/sft", vsQ1_2025: "+22%", vsQ1_2024: "+58%", city: "Bangalore" },
-  { corridor: "Yelahanka / North BLR", rateQ1_2026: "₹356–456/sft", vsQ1_2025: "+18%", vsQ1_2024: "+44%", city: "Bangalore" },
-  { corridor: "Sarjapur (premium zone)", rateQ1_2026: "₹533–689/sft", vsQ1_2025: "+25%", vsQ1_2024: "+62%", city: "Bangalore" },
-  { corridor: "Kanakapura (metro zone)", rateQ1_2026: "₹400–533/sft", vsQ1_2025: "+34%", vsQ1_2024: "+71%", city: "Bangalore" },
-  { corridor: "Hoskote–Malur", rateQ1_2026: "₹89–156/sft", vsQ1_2025: "+28%", vsQ1_2024: "+35%", city: "Bangalore" },
-  { corridor: "Hinjewadi Phase 3", rateQ1_2026: "₹356–500/sft", vsQ1_2025: "+20%", vsQ1_2024: "+48%", city: "Pune" },
-  { corridor: "Wagholi–Kharadi", rateQ1_2026: "₹267–356/sft", vsQ1_2025: "+24%", vsQ1_2024: "+52%", city: "Pune" },
-  { corridor: "Balewadi–Baner", rateQ1_2026: "₹467–644/sft", vsQ1_2025: "+17%", vsQ1_2024: "+38%", city: "Pune" },
-  { corridor: "Ulwe (Airport Zone)", rateQ1_2026: "₹500–756/sft", vsQ1_2025: "+28%", vsQ1_2024: "+65%", city: "Mumbai" },
-  { corridor: "Thane–Kalyan", rateQ1_2026: "₹422–578/sft", vsQ1_2025: "+15%", vsQ1_2024: "+32%", city: "Mumbai" },
-  { corridor: "Navi Mumbai (NMIA)", rateQ1_2026: "₹578–867/sft", vsQ1_2025: "+22%", vsQ1_2024: "+55%", city: "Mumbai" },
+  { corridor: "Devanahalli (BIAL zone)", currentRate: "₹311–378/sft", vsLastYear: "+22%", vs2YearsAgo: "+58%", city: "Bangalore" },
+  { corridor: "Yelahanka / North BLR", currentRate: "₹356–456/sft", vsLastYear: "+18%", vs2YearsAgo: "+44%", city: "Bangalore" },
+  { corridor: "Sarjapur (premium zone)", currentRate: "₹533–689/sft", vsLastYear: "+25%", vs2YearsAgo: "+62%", city: "Bangalore" },
+  { corridor: "Kanakapura (metro zone)", currentRate: "₹400–533/sft", vsLastYear: "+34%", vs2YearsAgo: "+71%", city: "Bangalore" },
+  { corridor: "Hoskote–Malur", currentRate: "₹89–156/sft", vsLastYear: "+28%", vs2YearsAgo: "+35%", city: "Bangalore" },
+  { corridor: "Hinjewadi Phase 3", currentRate: "₹356–500/sft", vsLastYear: "+20%", vs2YearsAgo: "+48%", city: "Pune" },
+  { corridor: "Wagholi–Kharadi", currentRate: "₹267–356/sft", vsLastYear: "+24%", vs2YearsAgo: "+52%", city: "Pune" },
+  { corridor: "Balewadi–Baner", currentRate: "₹467–644/sft", vsLastYear: "+17%", vs2YearsAgo: "+38%", city: "Pune" },
+  { corridor: "Ulwe (Airport Zone)", currentRate: "₹500–756/sft", vsLastYear: "+28%", vs2YearsAgo: "+65%", city: "Mumbai" },
+  { corridor: "Thane–Kalyan", currentRate: "₹422–578/sft", vsLastYear: "+15%", vs2YearsAgo: "+32%", city: "Mumbai" },
+  { corridor: "Navi Mumbai (NMIA)", currentRate: "₹578–867/sft", vsLastYear: "+22%", vs2YearsAgo: "+55%", city: "Mumbai" },
 ];
 
 // ── Developer Strategy Tracker ──

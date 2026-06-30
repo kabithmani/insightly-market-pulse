@@ -1,4 +1,5 @@
 import { investorDeals, capRates } from "@/data/intelligenceData";
+import { REPORT_PERIOD } from "@/utils/period";
 import { Loader2 } from "lucide-react";
 
 interface Props {
@@ -48,7 +49,7 @@ export default function InvestorIntelligence({ city, location, dynamic, loading 
       <div className="rounded-3xl bg-card shadow-card overflow-hidden">
         <div className="p-6 border-b border-border">
           <h3 className="text-lg font-bold text-foreground">Cap Rate & Yield Intelligence</h3>
-          <p className="text-sm text-muted-foreground">Pan-India benchmarks · Q1 2026</p>
+          <p className="text-sm text-muted-foreground">Pan-India benchmarks · {REPORT_PERIOD.quarterLabel}</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
