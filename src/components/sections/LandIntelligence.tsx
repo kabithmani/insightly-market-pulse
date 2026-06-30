@@ -1,5 +1,7 @@
 import { Landmark, TrendingUp, Loader2 } from "lucide-react";
 import { landDeals, landRateTrends } from "@/data/intelligenceData";
+import { REPORT_PERIOD } from "@/utils/period";
+
 
 interface Props {
   city: string;
@@ -26,7 +28,7 @@ export default function LandIntelligence({ city, location, dynamic, loading }: P
 
   const deals = useDynamic ? dynamic.deals : landDeals.filter(d => d.city === city);
   const trends = useDynamic
-    ? dynamic.trends.map(t => ({ corridor: t.corridor, rateQ1_2026: t.rate, vsQ1_2025: t.vsLastYear, vsQ1_2024: t.vs2YearsAgo }))
+    ? dynamic.trends.map(t => ({ corridor: t.corridor, currentRate: t.rate, vsLastYear: t.vsLastYear, vs2YearsAgo: t.vs2YearsAgo }))
     : landRateTrends.filter(t => t.city === city);
 
   return (
@@ -86,18 +88,18 @@ export default function LandIntelligence({ city, location, dynamic, loading }: P
             <thead>
               <tr className="bg-muted/50">
                 <th className="text-left p-3 font-semibold text-muted-foreground">Corridor</th>
-                <th className="text-right p-3 font-semibold text-muted-foreground">Rate Q1 2026</th>
-                <th className="text-right p-3 font-semibold text-muted-foreground">vs Q1 2025</th>
-                <th className="text-right p-3 font-semibold text-muted-foreground">vs Q1 2024</th>
+                <th className="text-right p-3 font-semibold text-muted-foreground">Rate {REPORT_PERIOD.quarterLabel}</th>
+                <th className="text-right p-3 font-semibold text-muted-foreground">vs {REPORT_PERIOD.lastYearQuarterLabel}</th>
+                <th className="text-right p-3 font-semibold text-muted-foreground">vs {REPORT_PERIOD.twoYearsAgoQuarterLabel}</th>
               </tr>
             </thead>
             <tbody>
               {trends.map((t: any, i: number) => (
                 <tr key={i} className={i % 2 === 0 ? "" : "bg-muted/20"}>
                   <td className="p-3 font-semibold text-foreground">{t.corridor}</td>
-                  <td className="p-3 text-right text-foreground font-medium">{t.rateQ1_2026 || t.rate}</td>
-                  <td className="p-3 text-right text-green-600 font-semibold">{t.vsQ1_2025 || t.vsLastYear}</td>
-                  <td className="p-3 text-right text-green-600 font-bold">{t.vsQ1_2024 || t.vs2YearsAgo}</td>
+                  <td className="p-3 text-right text-foreground font-medium">{t.currentRate || t.rate}</td>
+                  <td className="p-3 text-right text-green-600 font-semibold">{t.vsLastYear}</td>
+                  <td className="p-3 text-right text-green-600 font-bold">{t.vs2YearsAgo}</td>
                 </tr>
               ))}
             </tbody>

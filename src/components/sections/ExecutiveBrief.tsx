@@ -1,5 +1,6 @@
 import { TrendingUp, Zap, AlertTriangle, Loader2 } from "lucide-react";
 import { executiveThemes, getMarketMetrics } from "@/data/intelligenceData";
+import { REPORT_PERIOD } from "@/utils/period";
 
 interface Props {
   city: string;
@@ -27,11 +28,11 @@ export default function ExecutiveBrief({ city, location, dynamic, loading }: Pro
   const summary = useDynamic
     ? dynamic.summary
     : city === "Bangalore"
-    ? "The Bangalore residential market enters March 2026 in its strongest cycle since 2019. RERA registrations are up 23% YOY, luxury segment sales have surged 41%, and NRI pre-sales have crossed the 38-47% mark at premium launches. North Bangalore has emerged as the defining thesis of this cycle, with ₹580Cr+ deployed by top developers in just 15 days."
+    ? `The Bangalore residential market enters ${REPORT_PERIOD.monthLabel} in its strongest cycle since 2019. RERA registrations are up 23% YOY, luxury segment sales have surged 41%, and NRI pre-sales have crossed the 38-47% mark at premium launches. North Bangalore has emerged as the defining thesis of this cycle, with ₹580Cr+ deployed by top developers in just 15 days.`
     : city === "Pune"
-    ? "Pune's western IT corridor is reaching a pricing inflection point. Hinjewadi leads with a CMI of 8.7, while satellite markets Tathawade (+22%) and Wagholi (+24%) show breakout appreciation. Metro Phase 3 tunneling at 40% completion is the primary catalyst. RERA filings up 15% YOY signal sustained developer confidence."
+    ? `Pune's western IT corridor is reaching a pricing inflection point as of ${REPORT_PERIOD.monthLabel}. Hinjewadi leads with a CMI of 8.7, while satellite markets Tathawade (+22%) and Wagholi (+24%) show breakout appreciation. Metro Phase 3 tunneling at 40% completion is the primary catalyst. RERA filings up 15% YOY signal sustained developer confidence.`
     : city === "Mumbai"
-    ? "Mumbai's dual-catalyst story — Coastal Road and NMIA — is creating two distinct investment corridors. BKC rents hit all-time highs, GIC's ₹4,200Cr acquisition validates ultra-premium, while Ulwe's 18% YOY appreciation leads the growth corridor. Institutional capital inflows are at record levels."
+    ? `Mumbai's dual-catalyst story — Coastal Road and NMIA — is creating two distinct investment corridors as of ${REPORT_PERIOD.monthLabel}. BKC rents hit all-time highs, GIC's ₹4,200Cr acquisition validates ultra-premium, while Ulwe's 18% YOY appreciation leads the growth corridor. Institutional capital inflows are at record levels.`
     : "";
 
   return (
@@ -49,7 +50,7 @@ export default function ExecutiveBrief({ city, location, dynamic, loading }: Pro
           </div>
           <div>
             <h3 className="text-lg font-bold text-foreground">Market Pulse Summary</h3>
-            <p className="text-sm text-muted-foreground">Intelligence Engine · {useDynamic ? "AI-Generated" : "March 1-15, 2026"} · by Kabith Mani</p>
+            <p className="text-sm text-muted-foreground">Intelligence Engine · {useDynamic ? `AI-Generated · ${REPORT_PERIOD.asOfShort}` : REPORT_PERIOD.fortnightLabel} · by Kabith Mani</p>
           </div>
         </div>
         <div className="prose prose-sm max-w-none text-muted-foreground">

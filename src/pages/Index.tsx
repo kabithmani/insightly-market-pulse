@@ -16,6 +16,7 @@ import DeepDiveSection from "@/components/sections/DeepDiveSection";
 import PropertyDiscovery from "@/components/sections/PropertyDiscovery";
 import { SearchContext } from "@/hooks/useSearchContext";
 import { DynamicIntelligence, generateDynamicIntelligence } from "@/utils/dynamicIntelligence";
+import { REPORT_PERIOD } from "@/utils/period";
 
 const sections = [
   { id: "🏠", label: "Property Search", value: "search" },
@@ -77,7 +78,7 @@ const Index = () => {
                 Real Estate Intelligence
               </h1>
               <p className="text-xs text-muted-foreground">
-                by Kabith Mani · Pan-India Coverage · Live Data
+                by Kabith Mani · Pan-India Coverage · Data as of {REPORT_PERIOD.asOfShort}
               </p>
             </div>
           </div>

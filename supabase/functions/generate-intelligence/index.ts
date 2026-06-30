@@ -28,12 +28,18 @@ Deno.serve(async (req) => {
     }
 
     const locationDesc = city ? `${location} in ${city}` : location;
-    const prompt = `You are a real estate intelligence analyst for India. Generate a comprehensive real estate intelligence report for the location: "${locationDesc}" (coordinates: ${lat}, ${lng}, radius: ${radius}km).
+    const today = new Date();
+    const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const todayLabel = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
+    const quarter = Math.floor(today.getMonth() / 3) + 1;
+    const periodLabel = `Q${quarter} ${today.getFullYear()}`;
+
+    const prompt = `You are a real estate intelligence analyst for India. Today's date is ${todayLabel}. Generate a comprehensive real estate intelligence report for the location: "${locationDesc}" (coordinates: ${lat}, ${lng}, radius: ${radius}km).
 
 IMPORTANT RULES:
 - All data must be realistic and location-specific
 - Pricing must be in Indian Rupees (₹) per sft
-- All metrics should reflect current Q1 2026 market conditions
+- All metrics should reflect current ${periodLabel} (as of ${todayLabel}) market conditions — never quote stale periods like "March 2026" if today is later
 - Infrastructure projects must be real and verifiable
 - Developer names must be real companies active in that region
 - Do NOT invent fake data - use reasonable estimates based on known market dynamics
