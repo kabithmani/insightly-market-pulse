@@ -40,16 +40,22 @@ export default function LocationMap({ center, radiusKm, discovery, verifiedPrope
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Tear down any previous map instance safely
     if (mapRef.current) {
-      mapRef.current.remove();
+      try { mapRef.current.remove(); } catch { /* ignore */ }
       mapRef.current = null;
     }
 
-    const map = L.map(containerRef.current, {
-      center: [center.lat, center.lng],
-      zoom: radiusKm <= 10 ? 13 : radiusKm <= 25 ? 11 : radiusKm <= 50 ? 10 : 9,
-      zoomControl: true,
-    });
+    let map: L.Map;
+    try {
+      map = L.map(containerRef.current, {
+        center: [center.lat, center.lng],
+        zoom: radiusKm <= 10 ? 13 : radiusKm <= 25 ? 11 : radiusKm <= 50 ? 10 : 9,
+        zoomControl: true,
+      });
+    } catch {
+      return;
+    }
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -110,11 +116,14 @@ export default function LocationMap({ center, radiusKm, discovery, verifiedPrope
 
     return () => {
       if (mapRef.current) {
-        mapRef.current.remove();
+        try { mapRef.current.remove(); } catch { /* ignore */ }
         mapRef.current = null;
       }
     };
-  }, [center, radiusKm, discovery, verifiedProperties]);
+    // Only rebuild when meaningful inputs change — avoid object-identity thrash
+    // that caused leaflet to remove markers from a torn-down map.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [center.lat, center.lng, radiusKm, discovery, verifiedProperties?.length]);
 
   return (
     <div className="rounded-3xl overflow-hidden shadow-card border border-border">
